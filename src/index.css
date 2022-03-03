@@ -11,3 +11,13 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.delete {
+  background-color: red;
+  border-radius: 20px;
+  border: none;
+  color:white;
+  margin-left: 5px;
+  padding: 10px;
+  cursor: pointer;
+}
