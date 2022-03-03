@@ -13,8 +13,8 @@ function App() {
   })
 
   useEffect(() => {
-    fireStore.collection('tweets').get()
-      .then((snapshot) => {
+    fireStore.collection('tweets')
+      .onSnapshot((snapshot) => {
         const docs = []
         snapshot.forEach(doc => {
 
@@ -110,21 +110,24 @@ function App() {
             type="text"
             placeholder='Escribe tu username'
           />
-          <button onClick={handleSubmit}>Enviar tweet</button>
+          <button className='sendtweet' onClick={handleSubmit}>Enviar tweet</button>
         </div>
       </form>
 
 
       <h1>Twitterss</h1>
       {data.map(item => (
-        <div key={item.id}>
-          <p>
-            Username: <strong>{item.username}</strong>
-          </p>
+        <div className='tweetbox' key={item.id}>
 
-          <p>{item.tweet}</p>
-          <button className='delete' onClick={() => deleteTweet(item.id)}>X</button>
-          <hr />
+          <div>
+            <p>{item.tweet}</p>
+            <p>
+              Por: <strong>{item.username}</strong>
+            </p>
+          </div>
+
+          <button className='delete' onClick={() => deleteTweet(item.id)}>Borrar</button>
+
 
         </div>
       ))}
