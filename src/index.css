@@ -47,3 +47,8 @@ code {
   padding: 10px;
   margin-bottom: 20px;
 }
+
+.likesbtn {
+  cursor: pointer;
+  height: 13px;
+}

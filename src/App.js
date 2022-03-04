@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import logo from './logo.svg';
 import './App.css';
 import { fireStore } from './firebase/firebase';
+import corazon from "./corazon.svg"
 
 function App() {
 
@@ -13,7 +14,8 @@ function App() {
   })
 
   useEffect(() => {
-    fireStore.collection('tweets')
+
+    const desuscribir = fireStore.collection('tweets')
       .onSnapshot((snapshot) => {
         const docs = []
         snapshot.forEach(doc => {
@@ -21,7 +23,8 @@ function App() {
           const snap = {
             username: doc.data().username,
             tweet: doc.data().tweet,
-            id: doc.id
+            id: doc.id,
+            likes: doc.data().likes
           }
 
           docs.push(snap)
@@ -29,6 +32,9 @@ function App() {
         })
         setData(docs)
       })
+      return () => {
+        desuscribir()
+      }
   }, []);
 
   // const handleUsernameChange = (e) => {
@@ -90,6 +96,17 @@ function App() {
 
   }
 
+  /**
+   * 
+   * @description function that actualize the likes from database 
+   */
+
+  function likeTweet(id, likes){
+    const innerLikes = likes || 0;
+    console.log(id)
+    fireStore.doc(`tweets/${id}`).update({likes: innerLikes +1})
+  }
+
   return (
     <div className="App">
 
@@ -127,6 +144,12 @@ function App() {
           </div>
 
           <button className='delete' onClick={() => deleteTweet(item.id)}>Borrar</button>
+
+          <span>
+            <img className='likesbtn' src={corazon} alt="" onClick={() => likeTweet(item.id, item.likes)}/>
+            {/* <span>{item.likes ? item.likes : 0}</span> */}
+            <span>{item.likes || 0}</span>
+          </span>
 
 
         </div>
