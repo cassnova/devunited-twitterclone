@@ -7,6 +7,7 @@ import corazon from "./corazon.svg"
 function App() {
 
   const [data, setData] = useState([])
+  const [isSearch, setIsSearch] = useState(false);
   const [tweet, setTweet] = useState({
     tweet: "",
     username: ""
@@ -14,6 +15,8 @@ function App() {
   })
 
   useEffect(() => {
+
+    setIsSearch(true)
 
     const desuscribir = fireStore.collection('tweets')
       .onSnapshot((snapshot) => {
@@ -31,10 +34,12 @@ function App() {
 
         })
         setData(docs)
+
+        setIsSearch(false)
       })
-      return () => {
-        desuscribir()
-      }
+    return () => {
+      desuscribir()
+    }
   }, []);
 
   // const handleUsernameChange = (e) => {
@@ -91,18 +96,18 @@ function App() {
 
     const userConfirm = window.confirm("Estas seguro que quieres eliminar el Tweet?");
 
-    if(userConfirm) {
+    if (userConfirm) {
 
       const updatedTweets = data.filter((tweet) => {
         return tweet.id !== id
       })
 
       setData(updatedTweets)
-    fireStore.doc(`tweets/${id}`).delete();
+      fireStore.doc(`tweets/${id}`).delete();
 
     }
-    
-    
+
+
 
   }
 
@@ -111,16 +116,19 @@ function App() {
    * @description function that actualize the likes from database 
    */
 
-  function likeTweet(id, likes){
+  function likeTweet(id, likes) {
     const innerLikes = likes || 0;
     console.log(id)
-    fireStore.doc(`tweets/${id}`).update({likes: innerLikes +1})
+    fireStore.doc(`tweets/${id}`).update({ likes: innerLikes + 1 })
   }
 
   return (
     <div className="App">
 
+      
+
       <form data={data} setData={setData} >
+      
         <textarea
           name='tweet'
           onChange={handleChange}
@@ -143,6 +151,7 @@ function App() {
 
 
       <h1>Twitterss</h1>
+      {isSearch ? <p>Cargando...</p> : null}
       {data.map(item => (
         <div className='tweetbox' key={item.id}>
 
@@ -156,7 +165,7 @@ function App() {
           <button className='delete' onClick={() => deleteTweet(item.id)}>Borrar</button>
 
           <span>
-            <img className='likesbtn' src={corazon} alt="" onClick={() => likeTweet(item.id, item.likes)}/>
+            <img className='likesbtn' src={corazon} alt="" onClick={() => likeTweet(item.id, item.likes)} />
             {/* <span>{item.likes ? item.likes : 0}</span> */}
             <span>{item.likes || 0}</span>
           </span>
