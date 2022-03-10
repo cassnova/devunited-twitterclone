@@ -34,6 +34,7 @@ function App() {
 
         })
         setData(docs)
+        
 
         setIsSearch(false)
       })
@@ -125,10 +126,10 @@ function App() {
   return (
     <div className="App">
 
-      
+
 
       <form data={data} setData={setData} >
-      
+     
         <textarea
           name='tweet'
           onChange={handleChange}
@@ -151,7 +152,10 @@ function App() {
 
 
       <h1>Twitterss</h1>
+
       {isSearch ? <p>Cargando...</p> : null}
+
+
       {data.map(item => (
         <div className='tweetbox' key={item.id}>
 
