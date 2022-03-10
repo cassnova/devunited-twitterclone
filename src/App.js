@@ -88,9 +88,17 @@ function App() {
   console.log(tweet)
 
   function deleteTweet(id) {
-    const updatedTweets = data.filter((tweet) => {
-      return tweet.id !== id
-    })
+
+    const userConfirm = window.confirm("Estas seguro que quieres eliminar este hermoso Tweet?");
+
+    if(userConfirm) {
+
+      const updatedTweets = data.filter((tweet) => {
+        return tweet.id !== id
+      })
+      
+    }
+    
     setData(updatedTweets)
     fireStore.doc(`tweets/${id}`).delete();
 
