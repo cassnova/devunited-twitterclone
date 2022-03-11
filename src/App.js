@@ -1,22 +1,23 @@
 import React, { useEffect, useState } from 'react'
 import logo from './logo.svg';
 import './App.css';
-import { fireStore } from './firebase/firebase';
+import { fireStore, loginConGoogle, auth, logout } from './firebase/firebase';
 import corazon from "./corazon.svg"
 
 function App() {
 
   const [data, setData] = useState([])
   const [isSearch, setIsSearch] = useState(false);
+  const [user, setUser] = useState(null);
   const [tweet, setTweet] = useState({
     tweet: "",
     username: ""
+  });
 
-  })
 
   useEffect(() => {
 
-    setIsSearch(true)
+    setIsSearch(true);
 
     const desuscribir = fireStore.collection('tweets')
       .onSnapshot((snapshot) => {
@@ -34,10 +35,17 @@ function App() {
 
         })
         setData(docs)
-        
+
 
         setIsSearch(false)
-      })
+
+      });
+
+    auth.onAuthStateChanged((user) => {
+      setUser(user);
+      console.log(user)
+    });
+
     return () => {
       desuscribir()
     }
@@ -126,10 +134,28 @@ function App() {
   return (
     <div className="App">
 
+      {user ? (
+        <div>
+          <div className="user-profile">
+            
+            <img className="user-profile-pic" src={user.photoURL} alt=""/>
+            
+            <p>¡Hola {user.displayName}!</p>
+
+            <button className='login-btn-logout' onClick={logout}>Log out</button>
+
+          </div>
+        </div>
+      ) : (
+        <button className="login-btn" onClick={loginConGoogle}>
+          Sign in with Google
+        </button>
+      )}
+
 
 
       <form data={data} setData={setData} >
-     
+
         <textarea
           name='tweet'
           onChange={handleChange}
