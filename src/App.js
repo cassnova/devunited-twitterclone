@@ -11,7 +11,9 @@ function App() {
   const [user, setUser] = useState(null);
   const [tweet, setTweet] = useState({
     tweet: "",
-    username: ""
+    username: "",
+    uid: "",
+    mail: "",
   });
 
 
@@ -28,7 +30,9 @@ function App() {
             username: doc.data().username,
             tweet: doc.data().tweet,
             id: doc.id,
-            likes: doc.data().likes
+            likes: doc.data().likes,
+            email: doc.data().email,
+            uid: doc.data().uid
           }
 
           docs.push(snap)
@@ -43,7 +47,7 @@ function App() {
 
     auth.onAuthStateChanged((user) => {
       setUser(user);
-      console.log(user)
+      // console.log(user)
     });
 
     return () => {
@@ -71,8 +75,10 @@ function App() {
 
   const handleChange = (e) => {
     let newTweet = {
-      ...tweet,
-      [e.target.name]: e.target.value
+      tweet: e.target.value,
+      uid: user.uid,
+      email: user.email,
+      username: user.displayName
     }
     setTweet(newTweet)
   }
@@ -87,7 +93,7 @@ function App() {
       const currentTweet = {
         username: doc.data().username,
         tweet: doc.data().tweet,
-        id: doc.id
+        id: doc.id,
       }
       setData([currentTweet, ...data])
 
@@ -98,8 +104,6 @@ function App() {
     })
 
   }
-
-  console.log(tweet)
 
   function deleteTweet(id) {
 
@@ -127,7 +131,7 @@ function App() {
 
   function likeTweet(id, likes) {
     const innerLikes = likes || 0;
-    console.log(id)
+    // console.log(id)
     fireStore.doc(`tweets/${id}`).update({ likes: innerLikes + 1 })
   }
 
@@ -137,9 +141,9 @@ function App() {
       {user ? (
         <div>
           <div className="user-profile">
-            
-            <img className="user-profile-pic" src={user.photoURL} alt=""/>
-            
+
+            <img className="user-profile-pic" src={user.photoURL} alt="" />
+
             <p>¡Hola {user.displayName}!</p>
 
             <button className='login-btn-logout' onClick={logout}>Log out</button>
@@ -165,13 +169,13 @@ function App() {
           placeholder='Ey! escribe tu tweet!'
         />
         <div>
-          <input
+          {/* <input
             name='username'
             onChange={handleChange}
             value={tweet.username}
             type="text"
             placeholder='Escribe tu username'
-          />
+          /> */}
           <button className='sendtweet' onClick={handleSubmit}>Enviar tweet</button>
         </div>
       </form>
@@ -187,9 +191,8 @@ function App() {
 
           <div>
             <p>{item.tweet}</p>
-            <p>
-              Por: <strong>{item.username}</strong>
-            </p>
+            <p> Por: {item.username}</p>
+            <p>{item.email}</p>
           </div>
 
           <button className='delete' onClick={() => deleteTweet(item.id)}>Borrar</button>
