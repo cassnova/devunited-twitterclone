@@ -91,9 +91,11 @@ function App() {
     const getDoc = addTweet.then(doc => (doc.get()))
     getDoc.then(doc => {
       const currentTweet = {
-        username: doc.data().username,
+        username: doc.data().displayName,
         tweet: doc.data().tweet,
         id: doc.id,
+        uid: doc.data().uid,
+        email: doc.data().email
       }
       setData([currentTweet, ...data])
 
@@ -195,7 +197,12 @@ function App() {
             <p>{item.email}</p>
           </div>
 
-          <button className='delete' onClick={() => deleteTweet(item.id)}>Borrar</button>
+          {
+            (user !== null && user.uid === item.uid) &&
+            <button className='delete' onClick={() => deleteTweet(item.id)}>Borrar</button>
+
+          }
+
 
           <span>
             <img className='likesbtn' src={corazon} alt="" onClick={() => likeTweet(item.id, item.likes)} />
