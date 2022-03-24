@@ -6,6 +6,7 @@ import corazon from "./corazon.svg"
 
 function App() {
 
+
   const [data, setData] = useState([])
   const [isSearch, setIsSearch] = useState(false);
   const [user, setUser] = useState(null);
@@ -72,6 +73,7 @@ function App() {
   //   setTweet(newTweet);
 
   // }
+
 
   const handleChange = (e) => {
     let newTweet = {
