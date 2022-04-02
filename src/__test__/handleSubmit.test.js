@@ -1,7 +1,8 @@
-import { handleSubmit } from "../App";
+import handleSubmit from '../components/handleSubmit'
 describe("Probando test para el handleSubmit", () => {
     test("Ingreso el tweet y el resultado deberia ser true", () => {
-        const result = handleSubmit(true);
-        expect(result).toBe(true)
-    })
-})
+        render(handleSubmit);
+        const component = screen.getByText('Tweet', { exact: true });
+        expect(component).toBeInTheDocument();
+    });
+});

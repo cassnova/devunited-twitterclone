@@ -3,8 +3,10 @@ import logo from './logo.svg';
 import './App.css';
 import { fireStore, loginConGoogle, auth, logout } from './firebase/firebase';
 import corazon from "./corazon.svg"
+import logobig from './imgs/logobig.svg'
 
-function App() {
+
+export default function App() {
 
 
   const [data, setData] = useState([])
@@ -142,6 +144,10 @@ function App() {
   return (
     <div className="App">
 
+      <div>
+        <img className='logodevs' src={logobig} />
+      </div>
+
       {user ? (
         <div>
           <div className="user-profile">
@@ -155,9 +161,13 @@ function App() {
           </div>
         </div>
       ) : (
-        <button className="login-btn" onClick={loginConGoogle}>
-          Sign in with Google
-        </button>
+        <div>
+          <h1 className='title1'>LOREM IPSUM DOLOR</h1>
+          <h2 className='title2'>Lorem ipsum dolor sit amet, consectetur adipiscing elit</h2>
+          <button className="login-btn" onClick={loginConGoogle}>
+            Sign in with Google
+          </button>
+        </div>
       )}
 
 
@@ -220,5 +230,5 @@ function App() {
   );
 }
 
-export { App, handleSubmit, deleteTweet };
+
 
