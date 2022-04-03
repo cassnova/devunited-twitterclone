@@ -4,6 +4,7 @@ import './App.css';
 import { fireStore, loginConGoogle, auth, logout } from './firebase/firebase';
 import corazon from "./corazon.svg"
 import logobig from './imgs/logobig.svg'
+import logogoogle from './imgs/logogoogle.png'
 
 
 export default function App() {
@@ -144,9 +145,7 @@ export default function App() {
   return (
     <div className="App">
 
-      <div>
-        <img className='logodevs' src={logobig} />
-      </div>
+
 
       {user ? (
         <div>
@@ -159,72 +158,97 @@ export default function App() {
             <button className='login-btn-logout' onClick={logout}>Log out</button>
 
           </div>
-        </div>
-      ) : (
-        <div>
-          <h1 className='title1'>LOREM IPSUM DOLOR</h1>
-          <h2 className='title2'>Lorem ipsum dolor sit amet, consectetur adipiscing elit</h2>
-          <button className="login-btn" onClick={loginConGoogle}>
-            Sign in with Google
-          </button>
-        </div>
-      )}
 
+          <form data={data} setData={setData} >
 
-
-      <form data={data} setData={setData} >
-
-        <textarea
-          name='tweet'
-          onChange={handleChange}
-          value={tweet.tweet}
-          cols="30"
-          rows="5"
-          placeholder='Ey! escribe tu tweet!'
-        />
-        <div>
-          {/* <input
+            <textarea
+              name='tweet'
+              onChange={handleChange}
+              value={tweet.tweet}
+              cols="30"
+              rows="5"
+              placeholder='Ey! escribe tu tweet!'
+            />
+            <div>
+              {/* <input
             name='username'
             onChange={handleChange}
             value={tweet.username}
             type="text"
             placeholder='Escribe tu username'
           /> */}
-          <button className='sendtweet' onClick={handleSubmit}>Enviar tweet</button>
+              <button className='sendtweet' onClick={handleSubmit}>Enviar tweet</button>
+            </div>
+          </form>
+
+
+          <h1>Twitterss</h1>
+
+          {isSearch ? <p>Cargando...</p> : null}
+
+
+          {data.map(item => (
+            <div className='tweetbox' key={item.id}>
+
+              <div>
+                <p>{item.tweet}</p>
+                <p> Por: {item.username}</p>
+                <p>{item.email}</p>
+              </div>
+
+              {
+                (user !== null && user.uid === item.uid) &&
+                <button className='delete' onClick={() => deleteTweet(item.id)}>Borrar</button>
+
+              }
+
+
+              <span>
+                <img className='likesbtn' src={corazon} alt="" onClick={() => likeTweet(item.id, item.likes)} />
+                {/* <span>{item.likes ? item.likes : 0}</span> */}
+                <span>{item.likes || 0}</span>
+              </span>
+
+
+            </div>
+          ))}
+
+
+
+
         </div>
-      </form>
 
 
-      <h1>Twitterss</h1>
+      ) : (
 
-      {isSearch ? <p>Cargando...</p> : null}
+        <div className='logoutContainer'>
+
+          <img className='logodevs' src={logobig} />
 
 
-      {data.map(item => (
-        <div className='tweetbox' key={item.id}>
+          <h1 className='title1'>LOREM IPSUM DOLOR</h1>
+          <h2 className='title2'>Lorem ipsum dolor sit amet, consectetur adipiscing elit</h2>
 
+          <div className='buttonContainer'>
+            <div className='logoContainer'>
+              <img className='logogoogle' src={logogoogle} />
+            </div>
+            <button className="login-btn" onClick={loginConGoogle}>
+              Sign in with Google
+            </button>
+          </div>
           <div>
-            <p>{item.tweet}</p>
-            <p> Por: {item.username}</p>
-            <p>{item.email}</p>
+            <p>© 2020 Devs_United - <span>BETA</span></p>
           </div>
 
-          {
-            (user !== null && user.uid === item.uid) &&
-            <button className='delete' onClick={() => deleteTweet(item.id)}>Borrar</button>
-
-          }
-
-
-          <span>
-            <img className='likesbtn' src={corazon} alt="" onClick={() => likeTweet(item.id, item.likes)} />
-            {/* <span>{item.likes ? item.likes : 0}</span> */}
-            <span>{item.likes || 0}</span>
-          </span>
 
 
         </div>
-      ))}
+      )}
+
+
+
+
 
     </div>
   );

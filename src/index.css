@@ -1,26 +1,29 @@
 @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@300&display=swap');
 
+@font-face {
+  font-family: 'silkscreen';
+  src: url(./fonts/slkscr.ttf) format('woff');
+}
+
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-@font-face {
-  font-family: 'silkscreen';
-  src: url(./fonts/slkscr.ttf) format('woff');
-}
 
-.App {
-  background-color: #2E132C;
+.App {}
+
+.logoutContainer {
   width: 414px;
-  height: 896;
+  height: 896px;
+  background-color: #2E132C;
 }
 
 .logodevs {
   width: 311px;
   height: 207px;
-  margin-top: 140px;
+  margin-top: 120px;
 
 }
 
@@ -28,15 +31,17 @@
   font-family: silkscreen;
   color: white;
   font-size: 36px;
-  margin-top: 150px;
+  margin-top: 180px;
+  padding-left: 10px;
+  padding-right: 10px;
 }
 
 .title2 {
   color: white;
   font-family: 'Fira Code', monospace;
   font-size: 18px;
-  margin-top: 50px;
-  margin-bottom: 50px;
+  margin-top: 30px;
+  margin-bottom: 30px;
 }
 
 body {
@@ -113,14 +118,40 @@ code {
   margin-right: 10px;
 }
 
-.login-btn {
+.buttonContainer {
+  display: flex;
   width: 367px;
+  /* height: 58px; */
+  justify-content: center;
+  margin-top: 20px;
+  margin-left: 25px;
+
+}
+
+.logoContainer {
+  background-color: white;
+  width: 58px;
   height: 58px;
-  margin: 20px;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.logogoogle {
+  width: 30px;
+
+}
+
+.login-btn {
+  width: 252px;
+  height: 58px;
+  /* margin: 20px; */
   padding: 10px;
   cursor: pointer;
-  border-radius: 5px 0px 0px 5px;
-  margin-bottom: 80px;
+  /* border-radius: 5px 0px 0px 5px; */
+
   border: none;
   background-color: #4285F4;
 }
