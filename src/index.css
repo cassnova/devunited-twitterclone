@@ -25,7 +25,7 @@
 
 .containerFeed {
   width: 414px;
-  height: 896px;
+  height: 100%;
   background-color: #2E132C;
 }
 
@@ -58,11 +58,12 @@
 
 
 .delete {
-  background-color: red;
+  width: 20px;
   border: none;
-  color: white;
+  background-color: #250C23;
   cursor: pointer;
   margin-right: 10px;
+  margin-left: 10px;
 }
 
 
@@ -73,10 +74,10 @@
   align-items: center;
   width: 414px;
   height: 190px;
-  border: 1px solid salmon;
+  border: 3px solid #60265B;
   margin: auto;
   padding: 10px;
-  margin-bottom: 20px;
+
 }
 
 .containerLikes {
@@ -269,6 +270,7 @@
   text-align: left;
   background-color: #800FFF;
   font-size: 15px;
+  width: 100%;
 }
 
 .boxTweet {
@@ -285,4 +287,56 @@
   color: #FFFFFF;
   margin-left: 20px;
 
+}
+
+@media only screen and (min-width: 414px) {
+  .containerFeed {
+    width: 100%;
+  }
+
+  .logoutContainer {
+    width: 100%;
+  }
+
+  .title2 {
+    margin-left: 100px;
+    margin-right: 100px;
+  }
+
+  .buttonContainer {
+
+    margin: auto;
+  }
+
+
+}
+
+@media only screen and (min-width: 768px) {
+  .user-profile-pic {
+    margin-left: 150px;
+  }
+
+  .login-btn-logout {
+    margin-right: 150px;
+  }
+}
+
+@media only screen and (min-width: 900px) {
+  .user-profile-pic {
+    margin-left: 220px;
+  }
+
+  .login-btn-logout {
+    margin-right: 220px;
+  }
+}
+
+@media only screen and (min-width: 1200px) {
+  .user-profile-pic {
+    margin-left: 600px;
+  }
+
+  .login-btn-logout {
+    margin-right: 600px;
+  }
 }

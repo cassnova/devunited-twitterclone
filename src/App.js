@@ -15,6 +15,7 @@ export default function App() {
   const [data, setData] = useState([])
   const [isSearch, setIsSearch] = useState(false);
   const [user, setUser] = useState(null);
+  const [favs, setFavs] = useState([]);
   const [tweet, setTweet] = useState({
     tweet: "",
     username: "",
