@@ -2,9 +2,11 @@ import React, { useEffect, useState } from 'react'
 import logo from './logo.svg';
 import './App.css';
 import { fireStore, loginConGoogle, auth, logout } from './firebase/firebase';
-import corazon from "./corazon.svg"
 import logobig from './imgs/logobig.svg'
 import logogoogle from './imgs/logogoogle.png'
+import logoutlogo from './imgs/logout.svg'
+import like from './imgs/like.svg'
+import trash from './imgs/trash.svg'
 
 
 export default function App() {
@@ -148,18 +150,22 @@ export default function App() {
 
 
       {user ? (
-        <div>
+        <div className='containerFeed'>
+
           <div className="user-profile">
 
             <img className="user-profile-pic" src={user.photoURL} alt="" />
 
-            <p>¡Hola {user.displayName}!</p>
-
-            <button className='login-btn-logout' onClick={logout}>Log out</button>
+            <button className='login-btn-logout' onClick={logout}>
+              Logout
+              <img src={logoutlogo} className='login-btn-logout-img' />
+            </button>
 
           </div>
 
-          <form data={data} setData={setData} >
+          <form className='containerTweet' data={data} setData={setData} >
+
+            <p>¡Hola {user.displayName}!</p>
 
             <textarea
               name='tweet'
@@ -169,20 +175,20 @@ export default function App() {
               rows="5"
               placeholder='Ey! escribe tu tweet!'
             />
-            <div>
-              {/* <input
+
+            {/* <input
             name='username'
             onChange={handleChange}
             value={tweet.username}
             type="text"
             placeholder='Escribe tu username'
           /> */}
-              <button className='sendtweet' onClick={handleSubmit}>Enviar tweet</button>
-            </div>
+            <button className='sendtweet' onClick={handleSubmit}>POST</button>
+
           </form>
 
 
-          <h1>Twitterss</h1>
+
 
           {isSearch ? <p>Cargando...</p> : null}
 
@@ -190,30 +196,48 @@ export default function App() {
           {data.map(item => (
             <div className='tweetbox' key={item.id}>
 
-              <div>
-                <p>{item.tweet}</p>
-                <p> Por: {item.username}</p>
-                <p>{item.email}</p>
+              <div className='containerPhotoTweet'>
+                <img src={user.photoURL} />
               </div>
 
-              {
-                (user !== null && user.uid === item.uid) &&
-                <button className='delete' onClick={() => deleteTweet(item.id)}>Borrar</button>
+              <div className='containerAllTweet'>
 
-              }
+                <div className='containerHeaderTweet'>
+
+                  <p>{item.username}</p>
 
 
-              <span>
-                <img className='likesbtn' src={corazon} alt="" onClick={() => likeTweet(item.id, item.likes)} />
-                {/* <span>{item.likes ? item.likes : 0}</span> */}
-                <span>{item.likes || 0}</span>
-              </span>
+                  {
+                    (user !== null && user.uid === item.uid) &&
+                    <button className='delete' onClick={() => deleteTweet(item.id)}>
+                      <img src={trash} />
+                    </button>
+                  }
+
+                </div>
+
+                <p className='email'>{item.email}</p>
+
+                <p className='boxTweet'>{item.tweet}</p>
+
+
+
+                <span className='containerLikes'>
+                  <img className='likesbtn' src={like} alt="" onClick={() => likeTweet(item.id, item.likes)} />
+                  {/* <span>{item.likes ? item.likes : 0}</span> */}
+                  <span className='likesCounter'>{item.likes || 0}</span>
+                </span>
+
+              </div>
+
+
+
+
+
 
 
             </div>
           ))}
-
-
 
 
         </div>
@@ -237,9 +261,11 @@ export default function App() {
               Sign in with Google
             </button>
           </div>
-          <div>
-            <p>© 2020 Devs_United - <span>BETA</span></p>
-          </div>
+
+          <p className='likefooter'>© 2020 Devs_United - <span className='likefooter-beta'>BETA</span></p>
+
+          <div className='likefooter-box'></div>
+
 
 
 
