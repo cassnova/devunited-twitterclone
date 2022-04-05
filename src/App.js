@@ -16,6 +16,7 @@ export default function App() {
   const [isSearch, setIsSearch] = useState(false);
   const [user, setUser] = useState(null);
   const [favs, setFavs] = useState([]);
+  const [view, setView] = useState("feed");
   const [tweet, setTweet] = useState({
     tweet: "",
     username: "",
@@ -47,8 +48,13 @@ export default function App() {
         })
         setData(docs)
 
-
         setIsSearch(false)
+
+        setFavs(tweet.filter(item => {
+          return item.likes > 1;
+        }))
+
+
 
       });
 
@@ -79,6 +85,8 @@ export default function App() {
   //   setTweet(newTweet);
 
   // }
+
+
 
 
   const handleChange = (e) => {
@@ -148,8 +156,6 @@ export default function App() {
   return (
     <div className="App">
 
-
-
       {user ? (
         <div className='containerFeed'>
 
@@ -189,12 +195,13 @@ export default function App() {
           </form>
 
 
-
+          <button type="button" onClick={() => setView("feed")}>Posts</button>
+          <button type="button" onClick={() => setView("favs")}>Favorites</button>
 
           {isSearch ? <p>Cargando...</p> : null}
 
 
-          {data.map(item => (
+          {(view === "feed" ? data : favs).map(item => (
             <div className='tweetbox' key={item.id}>
 
               <div className='containerPhotoTweet'>
