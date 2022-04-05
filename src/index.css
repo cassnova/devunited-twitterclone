@@ -289,6 +289,30 @@
 
 }
 
+.btn-feed {
+  width: 130px;
+  height: 30px;
+  background-color: #2F112D;
+  font-family: 'silkscreen';
+  font-size: 20px;
+  margin: 20px;
+  color: white;
+  cursor: pointer;
+  box-shadow: 1px 1px 5px 1px #F50D5A;
+}
+
+.btn-favs {
+  width: 130px;
+  height: 30px;
+  background-color: #2F112D;
+  font-family: 'silkscreen';
+  font-size: 20px;
+  margin: 20px;
+  color: white;
+  cursor: pointer;
+  box-shadow: 1px 1px 5px 1px #F50D5A;
+}
+
 @media only screen and (min-width: 414px) {
   .containerFeed {
     width: 100%;

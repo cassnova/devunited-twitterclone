@@ -195,8 +195,8 @@ export default function App() {
           </form>
 
 
-          <button type="button" onClick={() => setView("feed")}>Posts</button>
-          <button type="button" onClick={() => setView("favs")}>Favorites</button>
+          <button className='btn-feed' type="button" onClick={() => setView("feed")}>Posts</button>
+          <button className='btn-favs' type="button" onClick={() => setView("favs")}>Favorites</button>
 
           {isSearch ? <p>Cargando...</p> : null}
 
