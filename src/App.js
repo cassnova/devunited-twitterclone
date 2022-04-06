@@ -22,6 +22,7 @@ export default function App() {
     username: "",
     uid: "",
     mail: "",
+    likes: 0
   });
 
 
@@ -46,14 +47,14 @@ export default function App() {
           docs.push(snap)
 
         })
+
         setData(docs)
 
         setIsSearch(false)
 
-        setFavs(tweet.filter(item => {
-          return item.likes > 1;
-        }))
-
+        setFavs(data.filter(item => {
+          return item.likes > 5;
+        }));
 
 
       });
@@ -95,6 +96,7 @@ export default function App() {
       uid: user.uid,
       email: user.email,
       username: user.displayName
+
     }
     setTweet(newTweet)
   }
@@ -111,7 +113,8 @@ export default function App() {
         tweet: doc.data().tweet,
         id: doc.id,
         uid: doc.data().uid,
-        email: doc.data().email
+        email: doc.data().email,
+        likes: doc.data().likes
       }
       setData([currentTweet, ...data])
 
@@ -152,6 +155,9 @@ export default function App() {
     // console.log(id)
     fireStore.doc(`tweets/${id}`).update({ likes: innerLikes + 1 })
   }
+
+  console.log(data);
+  console.log(favs)
 
   return (
     <div className="App">
