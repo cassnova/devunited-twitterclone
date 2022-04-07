@@ -22,7 +22,8 @@ export default function App() {
     username: "",
     uid: "",
     mail: "",
-    likes: 0
+    photo: "",
+    likes: 0,
   });
 
 
@@ -41,8 +42,9 @@ export default function App() {
             id: doc.id,
             likes: doc.data().likes,
             email: doc.data().email,
-            uid: doc.data().uid
-          }
+            uid: doc.data().uid,
+            photo: doc.data().photoURL,
+          };
 
           docs.push(snap)
 
@@ -50,11 +52,11 @@ export default function App() {
 
         setData(docs)
 
-        setIsSearch(false)
-
         setFavs(data.filter(item => {
           return item.likes > 5;
         }));
+
+        setIsSearch(false)
 
 
       });
@@ -95,7 +97,8 @@ export default function App() {
       tweet: e.target.value,
       uid: user.uid,
       email: user.email,
-      username: user.displayName
+      username: user.displayName,
+      photo: user.photoURL
 
     }
     setTweet(newTweet)
@@ -114,7 +117,8 @@ export default function App() {
         id: doc.id,
         uid: doc.data().uid,
         email: doc.data().email,
-        likes: doc.data().likes
+        likes: doc.data().likes,
+        photo: doc.data().photoURL
       }
       setData([currentTweet, ...data])
 
@@ -158,6 +162,7 @@ export default function App() {
 
   console.log(data);
   console.log(favs)
+  console.log(user)
 
   return (
     <div className="App">
