@@ -43,7 +43,7 @@ export default function App() {
             likes: doc.data().likes,
             email: doc.data().email,
             uid: doc.data().uid,
-            photo: doc.data().photoURL,
+            photo: doc.data().photo,
           };
 
           docs.push(snap)
@@ -52,24 +52,95 @@ export default function App() {
 
         setData(docs)
 
-        setFavs(data.filter(item => {
-          return item.likes > 5;
-        }));
-
         setIsSearch(false)
+
 
 
       });
 
     auth.onAuthStateChanged((user) => {
-      setUser(user);
-      // console.log(user)
+      setUser(user)
+
+      if (user) {
+        fireStore.collection('users').get()
+          .then(snapshot => {
+            snapshot.forEach(doc => {
+
+              const userDoc = doc.data()
+              if (userDoc.uid === user.uid) {
+                setUser({
+                  ...user, ...userDoc
+                })
+
+              }
+            })
+          })
+      }
     });
 
     return () => {
       desuscribir()
     }
   }, []);
+
+  useEffect(() => {
+    if (user) {
+      if (data.length && user.favorites && user.favorites.length) {
+        const favorites = user.favorites.map(favId => {
+          const tweetFav = data.find(item => item.id === favId)
+          console.log(data, favId)
+          return tweetFav
+
+        })
+          .filter(item => item !== undefined)
+        setFavs(favorites)
+        console.log('FAVORITESSSSSS', favorites)
+      }
+
+
+      console.log('DATA', data)
+      console.log('Entrando al efecto', user)
+      fireStore.collection("users")
+        .get()
+        .then(snapshot => {
+
+          if (!snapshot.size) {
+            return fireStore.collection('users').add({
+              displayName: user.displayName,
+              photo: user.photoURL,
+              uid: user.uid,
+              email: user.email,
+              favorites: []
+            })
+          } else {
+            snapshot.forEach(doc => {
+
+              const userDoc = doc.data()
+
+              // Agrega solo usuarios nuevos
+
+              if (userDoc.uid !== user.uid) {
+
+                return fireStore.collection('users').add({
+                  displayName: user.displayName,
+                  photo: user.photoURL,
+                  uid: user.uid,
+                  email: user.email,
+                  favorites: []
+                })
+              }
+            })
+          }
+
+        })
+        .then(doc => doc.get())
+        .then(userDoc => {
+          setUser(userDoc)
+          console.warn(userDoc)
+
+        })
+    }
+  }, [user, data])
 
   // const handleUsernameChange = (e) => {
   //   let newTweet = {
@@ -101,6 +172,7 @@ export default function App() {
       photo: user.photoURL
 
     }
+
     setTweet(newTweet)
   }
 
@@ -108,6 +180,7 @@ export default function App() {
 
   function handleSubmit(e) {
     e.preventDefault()
+
     const addTweet = fireStore.collection("tweets").add(tweet)
     const getDoc = addTweet.then(doc => (doc.get()))
     getDoc.then(doc => {
@@ -156,13 +229,34 @@ export default function App() {
 
   function likeTweet(id, likes) {
     const innerLikes = likes || 0;
-    // console.log(id)
     fireStore.doc(`tweets/${id}`).update({ likes: innerLikes + 1 })
+
+    fireStore.collection("users")
+      .get()
+      .then(snapshot => {
+        snapshot.forEach(doc => {
+          const userDoc = doc.data()
+          if (userDoc.uid === user.uid) {
+            console.log(doc.id)
+            fireStore.doc(`users/${doc.id}`).update({
+              favorites: [...userDoc.favorites, id]
+            })
+          }
+        })
+      })
+    setUser({
+      ...user, favorites: [...user.favorites, id]
+    })
+    // .then(userDoc => {
+    //   console.log(userDoc)
+    // })
+
+
+
+
   }
 
-  console.log(data);
-  console.log(favs)
-  console.log(user)
+
 
   return (
     <div className="App">
@@ -216,7 +310,7 @@ export default function App() {
             <div className='tweetbox' key={item.id}>
 
               <div className='containerPhotoTweet'>
-                <img src={user.photoURL} />
+                <img src={item.photo} />
               </div>
 
               <div className='containerAllTweet'>
