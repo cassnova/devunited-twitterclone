@@ -7,6 +7,8 @@ import logogoogle from './imgs/logogoogle.png'
 import logoutlogo from './imgs/logout.svg'
 import like from './imgs/like.svg'
 import trash from './imgs/trash.svg'
+import 'bootstrap/dist/css/bootstrap.min.css'
+import Spinner from './components/Spinner';
 
 
 export default function App() {
@@ -303,7 +305,7 @@ export default function App() {
           <button className='btn-feed' type="button" onClick={() => setView("feed")}>Posts</button>
           <button className='btn-favs' type="button" onClick={() => setView("favs")}>Favorites</button>
 
-          {isSearch ? <p>Cargando...</p> : null}
+          {isSearch ? <Spinner /> : null}
 
 
           {(view === "feed" ? data : favs).map(item => (
