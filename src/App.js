@@ -34,6 +34,7 @@ export default function App() {
     setIsSearch(true);
 
     const desuscribir = fireStore.collection('tweets')
+      .orderBy('date')
       .onSnapshot((snapshot) => {
         const docs = []
         snapshot.forEach(doc => {
@@ -46,9 +47,10 @@ export default function App() {
             email: doc.data().email,
             uid: doc.data().uid,
             photo: doc.data().photo,
+            date: doc.data().date
           };
 
-          docs.push(snap)
+          docs.unshift(snap)
 
         })
 
@@ -75,6 +77,7 @@ export default function App() {
                 })
 
               }
+
             })
           })
       }
@@ -99,47 +102,65 @@ export default function App() {
 
       }
 
+      const fileUser = fireStore.collection('users').where("uid", "==", user.uid).get()
+      fileUser.then((res) => {
+        // console.log('query', res.empty)
+        // si el usuario con campo uid NO existe en la collection "users", empty === true
+        // si el usuario con campo uid SI existe en la collection "users", empty === false
+
+        if (res.empty) {
+          fireStore.collection('users').add({
+            uid: user.uid,
+            name: user.displayName,
+            photo: user.photoURL,
+            email: user.email,
+            favorites: []
+          });
+        }
 
 
-      fireStore.collection("users")
-        .get()
-        .then(snapshot => {
 
-          if (!snapshot.size) {
-            return fireStore.collection('users').add({
-              displayName: user.displayName,
-              photo: user.photoURL,
-              uid: user.uid,
-              email: user.email,
-              favorites: []
-            })
-          } else {
-            snapshot.forEach(doc => {
+      })
 
-              const userDoc = doc.data()
+      // fireStore.collection("users")
+      //   .get()
+      //   .then(snapshot => {
 
-              // Agrega solo usuarios nuevos
+      //     if (!snapshot.size) {
+      //       return fireStore.collection('users').add({
+      //         displayName: user.displayName,
+      //         photo: user.photoURL,
+      //         uid: user.uid,
+      //         email: user.email,
+      //         favorites: []
+      //       })
+      //     } else {
+      //       snapshot.forEach(doc => {
 
-              if (userDoc.uid !== user.uid) {
+      //         const userDoc = doc.data()
 
-                return fireStore.collection('users').add({
-                  displayName: user.displayName,
-                  photo: user.photoURL,
-                  uid: user.uid,
-                  email: user.email,
-                  favorites: []
-                })
-              }
-            })
-          }
+      //         // Agrega solo usuarios nuevos
 
-        })
-        .then(doc => doc.get())
-        .then(userDoc => {
-          setUser(userDoc)
+      //         if (userDoc.uid !== user.uid) {
+
+      //           return fireStore.collection('users').add({
+      //             displayName: user.displayName,
+      //             photo: user.photoURL,
+      //             uid: user.uid,
+      //             email: user.email,
+      //             favorites: []
+      //           })
+      //         }
+      //       })
+      //     }
+
+      //   })
+      //   .then(doc => doc.get())
+      //   .then(userDoc => {
+      //     setUser(userDoc)
 
 
-        })
+      //   })
     }
   }, [user, data])
 
@@ -170,7 +191,8 @@ export default function App() {
       uid: user.uid,
       email: user.email,
       username: user.displayName,
-      photo: user.photoURL
+      photo: user.photoURL,
+      date: Date.now()
 
     }
 
@@ -251,10 +273,6 @@ export default function App() {
     // .then(userDoc => {
     //   console.log(userDoc)
     // })
-
-
-
-
   }
 
 
